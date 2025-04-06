@@ -15,6 +15,6 @@ def user_id(id:int):
    cursor.execute('SELECT gender, age, city FROM "user" WHERE id = %s;', (id,))
    result = cursor.fetchone()
    if result == []:
-        raise HTTPException(404, "user not found")
+        raise HTTPException(404,{"detail": "user not found"})
     else:
         return result
