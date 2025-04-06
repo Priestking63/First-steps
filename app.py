@@ -1,34 +1,16 @@
 from fastapi import FastAPI
 import psycopg2
+from psycopg2.extras import RealDictCursor
+
 
 app = FastAPI()
 
-@app.get("/")
-def say_hello():
-    return "hello"
-
-@app.get("/sum")
-def sum_two(a: int, b: int) -> int:
-    return a+b
-
-@app.get("/number/{number}")
-def print_num(number:int):
-    return number * 2
-
-
-@app.post('/user')
-def print(user: str):
-    return {'message': f'hello, {user}'}
-
-@app.get('/booking/all')
-def all_bookings():
-    conn = psycopg2.connect(
-        "postgresql://postgres:password@localhost:5432/exercises"
-        )
-    cursor = conn.cursor()
-    cursor.execude(
-        """
-        SELECT *
-        FROM cd.bookings
-        """)
-    return cursor.fetchall()
+@app.get('/user/{id}')
+def user_id(id:int):
+   conn = psycopg2.connect(
+    "postgresql://robot-startml-ro:pheiph0hahj1Vaif@postgres.lab.karpov.courses:6432/startml",
+    cursor_factory=RealDictCursor
+   )
+   cursor = conn.cursor()
+   cursor.execute('SELECT gender, age, city FROM "user" WHERE id = %s;', (id,))
+   return cursor.fetchall()
