@@ -1,0 +1,30 @@
+def caesar_cipher(word, shift):
+    result = ''
+    for char in word:
+        if char.isalpha():  # Проверяем, является ли символ буквой
+            shift_amount = shift % 26  # Ограничиваем сдвиг диапазоном 0-25
+            if char.islower():  # Для строчных букв
+                result += chr(((ord(char) - ord('a') + shift_amount) % 26 + ord('a')))
+            else:  # Для заглавных букв
+                result += chr(((ord(char) - ord('A') + shift_amount) % 26 + ord('A')))
+        else:
+            result += char  # Не буквы (например, апострофы, знаки препинания) оставляем без изменений
+    return result
+
+def encrypt_sentence(sentence):
+    words = sentence.split(' ')  # Разделяем строку на слова по пробелам
+    encrypted_words = []
+    for word in words:
+        shift = len(word)  # Сдвиг равен длине слова
+        encrypted_word = caesar_cipher(word, shift)
+        encrypted_words.append(encrypted_word)
+    return ' '.join(encrypted_words)  # Собираем слова обратно в строку
+
+# Ввод данных
+sentence = input()
+
+# Шифрование
+encrypted_sentence = encrypt_sentence(sentence)
+
+# Вывод результата
+print("Зашифрованная строка:", encrypted_sentence)
